@@ -5,8 +5,10 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity
+@Entity(name = "s06.Region")
+@Table(name = "REGION")
 public class Region {
     @Id
     @Column(name = "REGION_ID")

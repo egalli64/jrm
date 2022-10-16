@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.jrm.dao.Employee;
+import com.example.jrm.dao.JpaUtil;
 
 public class CrudEmployee {
     private DaoEmployee dao;
@@ -54,5 +55,8 @@ public class CrudEmployee {
         crud.printByName("Steven", "King");
 
         crud.deleteRange(1_000, 1_010);
+
+        System.out.println("Shutdown");
+        JpaUtil.getEntityManagerFactory().close();
     }
 }

@@ -3,6 +3,8 @@ package com.example.jrm.s15;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.jrm.dao.JpaUtil;
+
 public class CrudOneToOne {
     private CarDao carDao;
     private EmployeeDao empDao;
@@ -59,5 +61,8 @@ public class CrudOneToOne {
         crud.printAllEmployeesWithCar();
         crud.printEmployeeWithCar(120);
         crud.printEmployeeWithCar(165);
+
+        System.out.println("Shutdown");
+        JpaUtil.getEntityManagerFactory().close();
     }
 }

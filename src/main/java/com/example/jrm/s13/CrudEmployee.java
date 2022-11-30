@@ -46,17 +46,19 @@ public class CrudEmployee {
     }
 
     public static void main(String[] args) {
-        CrudEmployee crud = new CrudEmployee();
-        crud.untypedPrintTopPayed(13_000.0);
-        crud.printTopPayed(15_000.0);
-        crud.namedPrintTopPayed(20_000.0);
+        try {
+            CrudEmployee crud = new CrudEmployee();
+            crud.untypedPrintTopPayed(13_000.0);
+            crud.printTopPayed(15_000.0);
+            crud.namedPrintTopPayed(20_000.0);
 
-        crud.printByName("Stephen", "King");
-        crud.printByName("Steven", "King");
+            crud.printByName("Stephen", "King");
+            crud.printByName("Steven", "King");
 
-        crud.deleteRange(1_000, 1_010);
-
-        System.out.println("Shutdown");
-        JpaUtil.getEntityManagerFactory().close();
+            crud.deleteRange(1_000, 1_010);
+        } finally {
+            System.out.println("Shutdown");
+            JpaUtil.getEntityManagerFactory().close();
+        }
     }
 }

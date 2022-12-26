@@ -3,16 +3,37 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
     version="3.0">
+
+    <!-- No container, the JDBC set should be provided here -->
     <persistence-unit name="hron">
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="jakarta.persistence.jdbc.url"
                 value="jdbc:postgresql://localhost:5432/postgres" />
+
             <property name="jakarta.persistence.jdbc.user" value="hron" />
             <property name="jakarta.persistence.jdbc.password" value="password" />
+            <!-- let hibernate know the actual SQL dialect -->
             <property name="hibernate.dialect"
                 value="org.hibernate.dialect.PostgreSQLDialect" />
+            <!-- value="org.hibernate.dialect.Oracle12cDialect" /> -->
+            <!-- value="org.hibernate.dialect.MySQLDialect" /> -->
             <property name="hibernate.show_sql" value="true" />
         </properties>
     </persistence-unit>
+
+    <!-- when running in a container, the JDBC setup is externally provided -->
+<!--     <persistence-unit name="hron"> -->
+<!--         <non-jta-data-source>java:comp/env/jdbc/hron</non-jta-data-source> -->
+<!--         <properties> -->
+<!--             let hibernate know the actual SQL dialect -->
+<!--             <property name="hibernate.dialect" -->
+<!--                 value="org.hibernate.dialect.PostgreSQLDialect" /> -->
+<!--             value="org.hibernate.dialect.Oracle12cDialect" /> -->
+<!--             value="org.hibernate.dialect.MySQLDialect" /> -->
+<!--             <property name="hibernate.show_sql" value="true" /> -->
+<!--             <property name="hibernate.format_sql" value="true" /> -->
+<!--         </properties> -->
+<!--     </persistence-unit> -->
+
 </persistence>

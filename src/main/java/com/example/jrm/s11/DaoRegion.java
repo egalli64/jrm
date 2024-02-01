@@ -13,19 +13,15 @@ public class DaoRegion {
     private static final Logger log = LoggerFactory.getLogger(DaoRegion.class);
 
     public Region read(int id) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        Region region = em.find(Region.class, id);
-        em.close();
-
-        return region;
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.find(Region.class, id);
+        }
     }
 
     public Region create(Region region) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = null;
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             tx = em.getTransaction();
             tx.begin();
             em.persist(region);
@@ -41,16 +37,13 @@ public class DaoRegion {
                 log.warn("Can't rollback transaction", e);
             }
             return null;
-        } finally {
-            em.close();
         }
     }
 
     public boolean update(Region region) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = null;
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             tx = em.getTransaction();
             tx.begin();
             em.merge(region);
@@ -66,16 +59,13 @@ public class DaoRegion {
                 log.warn("Can't rollback transaction", e);
             }
             return false;
-        } finally {
-            em.close();
         }
     }
 
     public boolean delete(Region entity) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = null;
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             tx = em.getTransaction();
             tx.begin();
             em.remove(em.contains(entity) ? entity : em.merge(entity));
@@ -91,16 +81,13 @@ public class DaoRegion {
                 log.warn("Can't rollback transaction", e);
             }
             return false;
-        } finally {
-            em.close();
         }
     }
 
     public Region delete(int id) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = null;
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             Region entity = em.find(Region.class, id);
             if (entity != null) {
                 tx = em.getTransaction();
@@ -122,8 +109,6 @@ public class DaoRegion {
                 log.warn("Can't rollback transaction", e);
             }
             return null;
-        } finally {
-            em.close();
         }
     }
 }

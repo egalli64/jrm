@@ -53,16 +53,18 @@ public class CrudOneToOne {
     }
 
     public static void main(String[] args) {
-        CrudOneToOne crud = new CrudOneToOne();
-        crud.printAllCars();
-        crud.printCar(12);
-        crud.printCar(42);
+        try {
+            CrudOneToOne crud = new CrudOneToOne();
+            crud.printAllCars();
+            crud.printCar(12);
+            crud.printCar(42);
 
-        crud.printAllEmployeesWithCar();
-        crud.printEmployeeWithCar(120);
-        crud.printEmployeeWithCar(165);
-
-        System.out.println("Shutdown");
-        JpaUtil.getEntityManagerFactory().close();
+            crud.printAllEmployeesWithCar();
+            crud.printEmployeeWithCar(120);
+            crud.printEmployeeWithCar(165);
+        } finally {
+            System.out.println("Shutdown");
+            JpaUtil.getEntityManagerFactory().close();
+        }
     }
 }

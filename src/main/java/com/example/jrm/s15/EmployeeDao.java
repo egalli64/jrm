@@ -12,28 +12,21 @@ import jakarta.persistence.EntityManager;
 
 public class EmployeeDao {
     static private final Logger log = LoggerFactory.getLogger(EmployeeDao.class);
+    static private final String SELECT_ALL_EMPLOYEES = "SELECT e FROM s15.Employee e";
 
     public List<Employee> readAll() {
         log.trace("readAll");
 
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
-            String jpql = "SELECT e FROM s15.Employee e";
-            return em.createQuery(jpql, Employee.class).getResultList();
-        } finally {
-            em.close();
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(SELECT_ALL_EMPLOYEES, Employee.class).getResultList();
         }
     }
 
     public Optional<Employee> read(int id) {
         log.trace("read({})", id);
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             return Optional.ofNullable(em.find(Employee.class, id));
-        } finally {
-            em.close();
         }
     }
 }

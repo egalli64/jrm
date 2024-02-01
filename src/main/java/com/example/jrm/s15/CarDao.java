@@ -16,22 +16,17 @@ public class CarDao {
     public List<Car> readAll() {
         log.trace("readAll");
 
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             String jpql = "SELECT c FROM s15.Car c";
             return em.createQuery(jpql, Car.class).getResultList();
-        } finally {
-            em.close();
         }
     }
 
     public Optional<Car> read(int id) {
         log.trace("read({})", id);
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-        try {
+
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             return Optional.ofNullable(em.find(Car.class, id));
-        } finally {
-            em.close();
         }
     }
 }

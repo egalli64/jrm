@@ -7,14 +7,11 @@ import com.example.jrm.dao.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 public class CountryDao {
-    public List<Country> readAll() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+    static private final String SELECT_ALL_COUNTRIES = "SELECT c FROM s16.Country c";
 
-        try {
-            String jpql = "SELECT c FROM s16.Country c";
-            return em.createQuery(jpql, Country.class).getResultList();
-        } finally {
-            em.close();
+    public List<Country> readAll() {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(SELECT_ALL_COUNTRIES, Country.class).getResultList();
         }
     }
 }

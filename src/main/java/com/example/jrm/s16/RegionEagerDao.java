@@ -7,14 +7,11 @@ import com.example.jrm.dao.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 public class RegionEagerDao {
-    public List<RegionEager> readAll() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+    static private final String SELECT_ALL_REGIONS = "SELECT r FROM RegionEager r";
 
-        try {
-            String jpql = "SELECT r FROM RegionEager r";
-            return em.createQuery(jpql, RegionEager.class).getResultList();
-        } finally {
-            em.close();
+    public List<RegionEager> readAll() {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(SELECT_ALL_REGIONS, RegionEager.class).getResultList();
         }
     }
 }

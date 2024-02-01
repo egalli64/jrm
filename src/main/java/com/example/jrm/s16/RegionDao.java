@@ -7,25 +7,18 @@ import com.example.jrm.dao.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 public class RegionDao {
-    public List<Region> readAllLazy() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+    private static final String SELECT_ALL_REGIONS = "SELECT r FROM s16.Region r";
+    private static final String EAGER_SELECT_ALL_REGIONS = "SELECT DISTINCT r FROM s16.Region r JOIN FETCH r.countries";
 
-        try {
-            String jpql = "SELECT r FROM s16.Region r";
-            return em.createQuery(jpql, Region.class).getResultList();
-        } finally {
-            em.close();
+    public List<Region> readAllLazy() {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(SELECT_ALL_REGIONS, Region.class).getResultList();
         }
     }
 
     public List<Region> readAllEager() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
-            String jpql = "SELECT DISTINCT r FROM s16.Region r JOIN FETCH r.countries";
-            return em.createQuery(jpql, Region.class).getResultList();
-        } finally {
-            em.close();
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(EAGER_SELECT_ALL_REGIONS, Region.class).getResultList();
         }
     }
 }

@@ -59,15 +59,17 @@ public class CrudManyToOne {
     }
 
     public static void main(String[] args) {
-        CrudManyToOne crud = new CrudManyToOne();
-        crud.printAllCountries();
+        try {
+            CrudManyToOne crud = new CrudManyToOne();
+            crud.printAllCountries();
 
-        crud.lazyPrintAllRegions();
-        crud.printAllRegionsJoinFetch();
+            crud.lazyPrintAllRegions();
+            crud.printAllRegionsJoinFetch();
 
-        crud.eagerPrintAllRegions();
-
-        System.out.println("Shutdown");
-        JpaUtil.getEntityManagerFactory().close();
+            crud.eagerPrintAllRegions();
+        } finally {
+            System.out.println("Shutdown");
+            JpaUtil.getEntityManagerFactory().close();
+        }
     }
 }

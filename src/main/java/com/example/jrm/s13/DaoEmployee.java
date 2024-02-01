@@ -20,47 +20,33 @@ public class DaoEmployee {
 
     @SuppressWarnings("unchecked")
     public List<Employee> getUntypedPayedTop(Double low) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             String jpql = "FROM Employee e WHERE e.salary > ?1 ORDER BY salary DESC";
             Query query = em.createQuery(jpql);
             query.setParameter(1, low);
             return (List<Employee>) query.getResultList();
-        } finally {
-            em.close();
         }
     }
 
     public List<Employee> getPayedTop(Double low) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             String jpql = "FROM Employee e WHERE e.salary > :low ORDER BY salary DESC";
             TypedQuery<Employee> query = em.createQuery(jpql, Employee.class);
             query.setParameter("low", low);
             return query.getResultList();
-        } finally {
-            em.close();
         }
     }
 
     public List<Employee> getNamedPayedTop(Double low) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             TypedQuery<Employee> query = em.createNamedQuery("getTopSalaried", Employee.class);
             query.setParameter("low", low);
             return query.getResultList();
-        } finally {
-            em.close();
         }
     }
 
     public Optional<Employee> getByName(String first, String last) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             String jpql = "FROM Employee e WHERE e.firstName = :first and e.lastName = :last";
             TypedQuery<Employee> query = em.createQuery(jpql, Employee.class);
             query.setParameter("first", first);
@@ -69,16 +55,13 @@ public class DaoEmployee {
         } catch (NoResultException nre) {
             log.debug("{} {}: {}", first, last, nre.getMessage());
             return Optional.empty();
-        } finally {
-            em.close();
         }
     }
 
     public int deleteBetween(Integer low, Integer high) {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = null;
 
-        try {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
             tx = em.getTransaction();
             String jpql = "DELETE FROM Employee e WHERE e.id BETWEEN :low AND :high";
             Query query = em.createQuery(jpql);
@@ -96,7 +79,6 @@ public class DaoEmployee {
             if (tx != null && tx.isActive()) {
                 tx.commit();
             }
-            em.close();
         }
     }
 }

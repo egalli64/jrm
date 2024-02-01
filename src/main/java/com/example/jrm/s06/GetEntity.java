@@ -8,12 +8,12 @@ public class GetEntity {
         SessionFactory sf = HibUtil.getSessionFactory();
         Session session = sf.openSession();
 
-        Region europe = session.get(Region.class, 42);
-        System.out.println(europe);
+        Region missing = session.get(Region.class, 42);
+        System.out.println("A missing region: " + missing);
 
         session.close();
 
-        // just a single SF is usually used in an application
+        // Closing the SF makes sense just because this is a demo code
         sf.close();
     }
 }

@@ -7,25 +7,18 @@ import com.example.jrm.dao.JpaUtil;
 import jakarta.persistence.EntityManager;
 
 public class TeamDao {
-    public List<Team> readAllLazy() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+    private static final String SELECT_ALL_TEAMS = "SELECT t FROM Team t";
+    private static final String EAGER_SELECT_ALL_TEAMS = "SELECT DISTINCT t FROM Team t JOIN FETCH t.employees";
 
-        try {
-            String jpql = "SELECT t FROM Team t";
-            return em.createQuery(jpql, Team.class).getResultList();
-        } finally {
-            em.close();
+    public List<Team> readAllLazy() {
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(SELECT_ALL_TEAMS, Team.class).getResultList();
         }
     }
 
     public List<Team> readAllEager() {
-        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-
-        try {
-            String jpql = "SELECT DISTINCT t FROM Team t JOIN FETCH t.employees";
-            return em.createQuery(jpql, Team.class).getResultList();
-        } finally {
-            em.close();
+        try (EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager()) {
+            return em.createQuery(EAGER_SELECT_ALL_TEAMS, Team.class).getResultList();
         }
     }
 }

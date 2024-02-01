@@ -41,11 +41,13 @@ public class CrudManyToMany {
     }
 
     public static void main(String[] args) {
-        CrudManyToMany crud = new CrudManyToMany();
-        crud.lazyPrintAllTeams();
-        crud.printAllTeamsJoinFetch();
-
-        System.out.println("Shutdown");
-        JpaUtil.getEntityManagerFactory().close();
+        try {
+            CrudManyToMany crud = new CrudManyToMany();
+            crud.lazyPrintAllTeams();
+            crud.printAllTeamsJoinFetch();
+        } finally {
+            System.out.println("Shutdown");
+            JpaUtil.getEntityManagerFactory().close();
+        }
     }
 }
